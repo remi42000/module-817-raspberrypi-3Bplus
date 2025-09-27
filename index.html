@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>PC817 Control Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 50px;
+    }
+    h1 {
+      color: #333;
+    }
+    .group {
+      margin: 20px;
+    }
+    .button {
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+    }
+    .on {
+      background-color: #28a745;
+    }
+    .off {
+      background-color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+  <h1>Control PC817 Optocouplers</h1>
+
+  <div class="group">
+    <h2>GPIO 17</h2>
+    <button class="button on" onclick="sendCommand(17, 'on')">ON</button>
+    <button class="button off" onclick="sendCommand(17, 'off')">OFF</button>
+  </div>
+
+  <div class="group">
+    <h2>GPIO 27</h2>
+    <button class="button on" onclick="sendCommand(27, 'on')">ON</button>
+    <button class="button off" onclick="sendCommand(27, 'off')">OFF</button>
+  </div>
+
+
+  <div class="group">
+    <h2>GPIO 5</h2>
+    <button class="button on" onclick="sendCommand(5, 'on')">ON</button>
+    <button class="button off" onclick="sendCommand(5, 'off')">OFF</button>
+  </div>
+
+
+
+  <div class="group">
+    <h2>GPIO 22</h2>
+    <button class="button on" onclick="sendCommand(22, 'on')">ON</button>
+    <button class="button off" onclick="sendCommand(22, 'off')">OFF</button>
+  </div>
+
+  
+  <script>
+    function sendCommand(pin, state) {
+      fetch(`/gpio?pin=${pin}&state=${state}`).catch(err => console.error("Error:", err));
+    }
+  </script>
+</body>
+</html>
