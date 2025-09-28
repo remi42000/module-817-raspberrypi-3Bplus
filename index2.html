@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Wireless Controls</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/nipplejs@0.9.0/dist/nipplejs.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    #joystick-move,
+    #joystick-turn {
+      width: 200px;
+      height: 200px;
+      background: #eee;
+      border-radius: 50%;
+      margin: 10px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .joystick-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 600px) {
+
+      #joystick-move,
+      #joystick-turn {
+        width: 140px;
+        height: 140px;
+      }
+
+      .joystick-container {
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="joystick-container">
+    <div>
+      <h2>Movement</h2>
+      <div id="joystick-move"></div>
+    </div>
+    <div>
+      <h2>Steering</h2>
+      <div id="joystick-turn"></div>
+    </div>
+  </div>
+
+  <script>
+    function sendCommand(pin, state) {
+      fetch(`/gpio?pin=${pin}&state=${state}`).catch(err => console.error("Error:", err));
+    }
+
+    // Movement joystick
+    const moveStick = nipplejs.create({
+      zone: document.getElementById('joystick-move'),
+      mode: 'static',
+      position: { left: '50%', top: '50%' },
+      color: 'green'
+    });
+
+    moveStick.on('dir:up', () => {
+      sendCommand(17, 'on');
+      sendCommand(27, 'off');
+    });
+
+    moveStick.on('dir:down', () => {
+      sendCommand(27, 'on');
+      sendCommand(17, 'off');
+    });
+
+    moveStick.on('end', () => {
+      sendCommand(17, 'off');
+      sendCommand(27, 'off');
+    });
+
+    // Steering joystick
+    const turnStick = nipplejs.create({
+      zone: document.getElementById('joystick-turn'),
+      mode: 'static',
+      position: { left: '50%', top: '50%' },
+      color: 'blue'
+    });
+
+        turnStick.on('dir:left', () => {
+        sendCommand(5, 'on');
+        sendCommand(22, 'off');
+     });
+
+       turnStick.on('dir:right', () => {
+       sendCommand(22, 'on');
+       sendCommand(5, 'off');
+    });
+
+      turnStick.on('end',        () => {
+      sendCommand(6, 'off');
+      sendCommand(23, 'off');
+    });
+       
+       turnStick.on('dir:down', () => {
+       sendCommand(22, 'off');
+       sendCommand(5, 'off');
+    });
+ 
+  </script>
+</body>
+
+</html>
